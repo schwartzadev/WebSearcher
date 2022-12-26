@@ -237,18 +237,19 @@ class SearchEngine(object):
             with open(fp, 'w') as outfile:
                 outfile.write(self.html)
 
-    def parse_results(self, save_dir='.'):
+    def parse_results(self, save_dir='.', include_html=False):
         """Parse a SERP
         
         Args:
             save_dir (str, optional): Description
+            include_html (bool, optional): Include the raw HTML in the results
         """
         # Parse results, see parsers.py
         assert self.html, "No HTML found"
         
         try:
             soup = wu.make_soup(self.html)
-            self.results = parsers.parse_serp(soup, serp_id=self.serp_id)
+            self.results = parsers.parse_serp(soup, serp_id=self.serp_id, include_html=include_html)
 
         except Exception:
             self.log.exception(f'Parsing error | serp_id : {self.serp_id}')
