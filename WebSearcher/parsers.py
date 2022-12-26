@@ -213,26 +213,30 @@ def parse_serp(serp, serp_id=None, verbose=False, make_soup=False):
 
     soup = webutils.make_soup(serp) if make_soup else serp
     assert type(soup) is BeautifulSoup, 'Input must be BeautifulSoup'
-    cmpts = extract_components(soup)
+    components = extract_components(soup)
 
-    parsed = []
+    parsed_components = []
     if verbose: 
         log.info(f'Parsing SERP {serp_id}')
         
-    for cmpt_rank, (cmpt_loc, cmpt) in enumerate(cmpts):
+    for cmpt_rank, (cmpt_loc, cmpt) in enumerate(components):
         cmpt_type = classify_type(cmpt) if cmpt_loc == 'main' else cmpt_loc
         if verbose: 
             log.info(f'{cmpt_rank} | {cmpt_type}')
         parsed_cmpt = parse_component(cmpt, cmpt_type=cmpt_type, cmpt_rank=cmpt_rank)
         assert isinstance(parsed_cmpt, list), \
             f'Parsed component must be list: {parsed_cmpt}'
-        parsed.extend(parsed_cmpt)
+        parsed_components.extend(parsed_cmpt)
+    
 
-    for serp_rank, p in enumerate(parsed):
-        p['qry'] = parse_query(soup)
-        p['lang'] = parse_lang(soup)
-        p['serp_id'] = serp_id
-        p['serp_rank'] = serp_rank
-        p['lhs_bar'] = soup.find('div', {'class': 'OeVqAd'}) is not None
+    for serp_rank, (parsed, component) in enumerate(zip(parsed_components, components)):
+        parsed['qry'] = parse_query(soup)
+        parsed['lang'] = parse_lang(soup)
+        parsed['serp_id'] = serp_id
+        parsed['serp_rank'] = serp_rank
+        parsed['lhs_bar'] = soup.find('div', {'class': 'OeVqAd'}) is not None
+
+        component_html = component[1]
+        parsed['html'] = component_html
         
-    return parsed
+    return parsed_components
