@@ -78,6 +78,25 @@ class SearchEngine(object):
         self.results = []
         self.results_html = []
 
+    @classmethod
+    def from_dict(cls, d):
+        """Initialize a SearchEngine object from a dictionary
+
+        Args:
+            d (dict): Dictionary containing SearchEngine attributes
+        """
+        se = cls()
+        se.base_url = d['base_url']
+        se.params = d['params']
+        se.headers = d['headers']
+        se.html = d['html']
+        # FIXME: missing crawl id
+        se.qry = d['qry']
+        se.loc = d['loc']
+        se.serp_id = d['serp_id']
+        se.timestamp = d['timestamp']
+        # FIXME: missing response code
+        return se
 
     def set_location(self, canonical_name):
         """Set location using uule parameter derived from location name
