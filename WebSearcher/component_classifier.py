@@ -25,7 +25,7 @@ def classify_type(cmpt):
     twitter = cmpt.find_previous().text == "Twitter Results"
 
     if "class" in cmpt.attrs:
-        if any(s in ["hlcw0c", "MjjYud"] for s in cmpt.attrs["class"]):
+        if any(s in ["hlcw0c", "MjjYud", "Ww4FFb", "tF2Cxc"] for s in cmpt.attrs["class"]):
             cmpt_type = "general"
 
     # Checks a g-scrolling-carousel for a specific id to classify as not all 
