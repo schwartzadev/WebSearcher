@@ -222,6 +222,7 @@ def parse_serp(serp, serp_id=None, verbose=False, make_soup=False, include_html=
         
     for cmpt_rank, (cmpt_loc, cmpt) in enumerate(components):
         cmpt_type = classify_type(cmpt) if cmpt_loc == 'main' else cmpt_loc
+        # import pdb; pdb.set_trace()
         if verbose: 
             log.info(f'{cmpt_rank} | {cmpt_type}')
         parsed_cmpt = parse_component(cmpt, cmpt_type=cmpt_type, cmpt_rank=cmpt_rank)

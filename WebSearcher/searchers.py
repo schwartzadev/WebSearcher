@@ -237,7 +237,8 @@ class SearchEngine(object):
             with open(fp, 'w') as outfile:
                 outfile.write(self.html)
 
-    def parse_results(self, save_dir='.', include_html=False):
+    def parse_results(self, save_dir='.', include_html=False, verbose=False):
+        # FIXME: refactor include_html to include_soup and rename return key
         """Parse a SERP
         
         Args:
@@ -249,7 +250,12 @@ class SearchEngine(object):
         
         try:
             soup = wu.make_soup(self.html)
-            self.results = parsers.parse_serp(soup, serp_id=self.serp_id, include_html=include_html)
+            self.results = parsers.parse_serp(
+                soup,
+                serp_id=self.serp_id,
+                include_html=include_html,
+                verbose=verbose
+            )
 
         except Exception:
             self.log.exception(f'Parsing error | serp_id : {self.serp_id}')

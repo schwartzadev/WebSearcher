@@ -22,6 +22,7 @@ def classify_type(cmpt):
     finance = cmpt.find("div", {"id": "knowledge-finance-wholepage__entity-summary"})
     img_box = cmpt.find("div", {"id": "imagebox_bigimages"})
     hybrid = cmpt.find("div", {"class": "ifM9O"})
+    nested = cmpt.find('li', {'class': 'MYVUIe'})
     twitter = cmpt.find_previous().text == "Twitter Results"
 
     if "class" in cmpt.attrs:
@@ -61,6 +62,8 @@ def classify_type(cmpt):
             cmpt_type = "knowledge"
         elif hybrid and g_accordian:
             cmpt_type = "general_questions"
+        elif nested:
+            cmpt_type = "nested"
 
     # Check for available on divs
     if "/Available on" in cmpt.text:
