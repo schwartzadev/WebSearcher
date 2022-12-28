@@ -1,27 +1,37 @@
 def parse_nested(cmpt, sub_rank=0):
-    """Parse the nested component
+    """Parse the nested component. These are components that contain a main
+    level result and then at least one sub result. The sub results are
+    inside of an ul element.
     
     Args:
-        cmpt (bs4 object): a knowledge component
+        cmpt (bs4 object): a nested component
     
     Returns:
         list: Return parsed dictionary in a list
     """
 
-    import pdb; pdb.set_trace()
-
     parsed = {'type': 'nested', 'sub_rank':sub_rank}
-    details = {}
 
-    # title_div = cmpt.find('div', {'class':'desktop-title-content'})
-    # details['title'] = title_div.text if title_div else None
+    # item with a data-hveid attribute and a data-ved attribute
+    main_item = cmpt.find('div', {'data-hveid': True, 'data-ved': True})
 
-    # subtitle_span = cmpt.find('span', {'class':'desktop-title-subcontent'})
-    # details['subtitle'] = subtitle_span.text if subtitle_span else None
+    parsed['title'] = main_item.find('h3').text
+    parsed['url'] = main_item.find('a').attrs['href']
+    parsed['cite'] = main_item.find('cite').text
+    # TODO: add snippet/detail?
 
-    # img = cmpt.find('img', {'id':'lu_map'})
-    # details['img_title'] = img.attrs['title'] if 'title' in img.attrs else None
-    # parsed['details'] = details
+    # sub items
+    # TODO: handle sub rank, etc. here?
+    sub_items_container = cmpt.find('ul', {'class': 'FxLDp'})
+    sub_items = sub_items_container.find_all('li')
+
+    # FIXME: should this be named details instead?
+    parsed['sub_items'] = []
+    for sub_item in sub_items:
+        parsed['sub_items'].append({
+            'title': sub_item.find('h3').text,
+            'url': sub_item.find('a').attrs['href'],
+            'cite': sub_item.find('cite').text,
+        })
+
     return [parsed]
-
-    # return [parsed]
