@@ -16,8 +16,13 @@ def parse_top_stories(cmpt, ctype='top_stories'):
     if subs:
         return [parse_top_story(sub, ctype, sub_rank) for sub_rank, sub in enumerate(subs)]
     else:
-        subs = cmpt.find('div', {'class':'qmv19b'}).children
-        return [parse_top_story(sub, ctype, sub_rank) for sub_rank, sub in enumerate(subs)]
+        try:
+            subs = cmpt.find('div', {'class':'qmv19b'}).children
+            return [parse_top_story(sub, ctype, sub_rank) for sub_rank, sub in enumerate(subs)]
+        except AttributeError:
+            container = cmpt.find('g-section-with-header')
+            subs = container.find_all('div', {'class':'xCURGd ep3Jdc'})
+            return [parse_top_story(sub, ctype, sub_rank) for sub_rank, sub in enumerate(subs)]
 
 
 def parse_top_story(sub, ctype, sub_rank=0):
