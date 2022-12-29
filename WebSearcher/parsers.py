@@ -103,6 +103,11 @@ def extract_results_column(soup):
     # Another fix for empty components, e.g. - <div class="bkWMgd"></div>
     drop_text = {'Twitter Results', ''}
     column = [(cloc, c) for (cloc, c) in column if c.text not in drop_text]
+
+    # Hacky fix to hide the parent element of Google 'promo's
+    # These typically say "Please help us improve Google." and have a prompt to
+    # submit a survey.
+    column = [(cloc, c) for (cloc, c) in column if not c.find('promo-throttler')]
     return column
     
 
@@ -156,7 +161,7 @@ def extract_components(soup):
         if rhs_kp:
             # reading from top-to-bottom, left-to-right
             cmpts.append(('knowledge_rhs', rhs_kp))
-            
+
     return cmpts
 
 def parse_component(cmpt, cmpt_type='', cmpt_rank=0):
