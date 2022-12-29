@@ -28,6 +28,10 @@ def classify_type(cmpt):
         if any(s in ["hlcw0c", "MjjYud", "Ww4FFb", "tF2Cxc"] for s in cmpt.attrs["class"]):
             cmpt_type = "general"
 
+    # This handles the case where a general result follows a knowledge panel
+    if cmpt.find('div', {'class': ['jtfYYd', 'UK95Uc']}):
+        cmpt_type = "general"
+
     # Checks a g-scrolling-carousel for a specific id to classify as not all 
     # top_stories have an h3 tag
     if carousel:
