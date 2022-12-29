@@ -24,6 +24,7 @@ def classify_footer_component(cmpt):
     gsection = cmpt.find('g-section-with-header')
     subs = cmpt.find_all('div', {'class':'g'})
     h3 = cmpt.find('h3')
+    aria_header = cmpt.find("div", {"aria-level": True, "role": "heading"})
 
     if 'id' in cmpt.attrs and cmpt.attrs['id'] == 'bres':
         if subs:
@@ -32,7 +33,11 @@ def classify_footer_component(cmpt):
             return 'discover_more'
         elif h3 and h3.text.strip() == 'Related searches':
             return 'searches_related'
+        elif aria_header and aria_header.text.strip() == 'Related searches':
+            return 'searches_related'
         elif h3 and h3.text.strip() == 'People also search for':
+            return 'searches_related'
+        elif aria_header and aria_header.text.strip() == 'People also search for':
             return 'searches_related'
         else:
             return 'unknown'

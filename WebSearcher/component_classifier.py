@@ -64,9 +64,6 @@ def classify_type(cmpt):
             cmpt_type = "general_questions"
         elif nested:
             cmpt_type = "nested"
-        elif related_searches:
-            import pdb; pdb.set_trace()
-            cmpt_type = "related_searches"
 
     # Check for available on divs
     if "/Available on" in cmpt.text:
