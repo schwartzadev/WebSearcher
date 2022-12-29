@@ -21,7 +21,9 @@ def parse_ad(sub, sub_rank=0, visible=None):
     parsed = {'type':'ad', 'sub_rank':sub_rank}
 
     parsed['title'] = sub.find('div', {'role':'heading'}).text
-    parsed['url'] = sub.find('div', {'class':'d5oMvf'}).find('a')['href']
+    url_container = sub.find('div', {'class':'d5oMvf'}) or sub.find('div', {'class':'v5yQqb'})
+    parsed['url'] = url_container.find('a')['href']
+
     if sub.find('span', {'class':'Zu0yb'}):
         parsed['cite'] = sub.find('span', {'class':'Zu0yb'}).text
 
