@@ -35,7 +35,7 @@ def classify_type(cmpt):
             cmpt_type = "top_stories"
 
     # Check component header
-    cmpt_header = cmpt.find("div", {"class": "mfMhoc"})
+    cmpt_header = cmpt.find("div", {"class": "mfMhoc"}) or cmpt.find("div", {"aria-level": "2", "role": "heading"})
     if cmpt_header:
         for text, ctype in h3_text_to_label.items():
             if cmpt_header.text.startswith(text):
